@@ -2,12 +2,14 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        DOCKER_IMAGE = 'your_dockerhub_username/music-mood'
+        DOCKER_IMAGE = 'akshitha123/music-mood'
     }
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/akshitha-123-prog/music-mood-recommender.git'
+                git branch: 'master',
+                    url: 'https://github.com/akshitha-123-prog/music-mood-recommender.git',
+                    credentialsId: 'github-credentials'
             }
         }
         stage('Build Docker Image') {
