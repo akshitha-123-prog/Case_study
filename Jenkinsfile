@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/yourusername/music-mood-recommender.git'
+                git 'https://github.com/akshitha-123-prog/music-mood-recommender.git'
             }
         }
         stage('Build Docker Image') {
