@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-mood-service
+spec:
+  selector:
+    app: music-mood
+  ports:
+  - port: 80
+    targetPort: 5000
+  type: LoadBalancer

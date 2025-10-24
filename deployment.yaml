@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: music-mood-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: music-mood
+  template:
+    metadata:
+      labels:
+        app: music-mood
+    spec:
+      containers:
+      - name: music-mood-container
+        image: your_dockerhub_username/music-mood:latest
+        ports:
+        - containerPort: 5000
