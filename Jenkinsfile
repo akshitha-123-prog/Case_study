@@ -1,35 +1,40 @@
-pipeline {
+pipeline{
     agent any
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        DOCKER_IMAGE = 'akshitha123/music-mood'
+    stages{
+        stage ("Build Docker Image"){
+            steps{
+                echo "Build Docker Image"
+                bat "docker build -t kubeapp:v2 ."
+            }
+        }
+        stage ("Docker Login"){
+            steps{
+                bat "docker login -u kavyakota18 -p Bkt@kota18"
+            }
+        }
+        stage("push Docker Iamge to Docker Hub"){
+            steps {
+                echo "push Docker Image to docker hub"
+                bat "docker tag kubeapp:v2 kavyakota18/smartapp:latest"
+                bat "docker push kavyakota18/smartapp:latest"
+
+
+            }
+        }
+        stage("Deploy to Kubernetes"){
+            steps{
+                bat "kubectl apply -f deployment.yaml --validate=false"
+                bat "kubectl apply -f service.yaml"
+            }
+        }
     }
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'master',
-                    url: 'https://github.com/akshitha-123-prog/Case_study.git',
-                    credentialsId: 'github-pat-jenkins'
-            }
+    post{
+        success{
+            echo 'Pipeline completed scucessfull!'
+
         }
-        stage('Build Docker Image') {
-            steps {
-                bat 'docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% .'
-            }
-        }
-        stage('Push to Docker Hub') {
-            steps {
-                bat 'echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin'
-                bat 'docker push %DOCKER_IMAGE%:%BUILD_NUMBER%'
-                bat 'docker tag %DOCKER_IMAGE%:%BUILD_NUMBER% %DOCKER_IMAGE%:latest'
-                bat 'docker push %DOCKER_IMAGE%:latest'
-            }
-        }
-        stage('Deploy to Kubernetes') {
-            steps {
-                bat 'kubectl apply -f deployment.yaml'
-                bat 'kubectl apply -f service.yaml'
-            }
+        failure{
+            echo "Pipeline failed.Please check the logs."
         }
     }
 }
