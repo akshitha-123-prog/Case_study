@@ -8,8 +8,8 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 git branch: 'master',
-                    url: 'https://github.com/akshitha-123-prog/music-mood-recommender.git',
-                    credentialsId: 'github-credentials'
+                    url: 'https://github.com/akshitha-123-prog/Case_study.git',
+                    credentialsId: 'github-pat-jenkins'
             }
         }
         stage('Build Docker Image') {
