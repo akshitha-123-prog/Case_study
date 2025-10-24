@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: kubeapp
-        image: kavyakota18/smartapp:latest
+        image: akshitha234/music:latest
 
         ports:
 
